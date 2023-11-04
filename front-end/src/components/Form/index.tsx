@@ -49,7 +49,7 @@ export function Form({ getUsers, onEdit, setOnEdit }: FormProps) {
 
     if (onEdit) {
       const userData = {
-        nome: user.name.value,
+        name: user.name.value,
         email: user.email.value,
         phone: user.phone.value,
         // updated_at: formatDate(new Date())

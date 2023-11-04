@@ -12,11 +12,10 @@ interface UserData {
 }[]
 
 export const updateUser = (request: Request, response: Response) => {
+  console.log("Resultado da requisição: " + JSON.stringify(request.body));
   if (request.body) {
-    const query = "UPDATE usuarios SET `nome` = ?, `email` = ?, `telefone` = ?, `updated_at` = ?";
+    const query = "UPDATE usuarios SET `name` = ?, `email` = ?, `phone` = ?, `updated_at` = ? WHERE `id` = ?";
     const body = request.body as UserData;
-
-    // const updateDate = new Date();
 
     const data = [
       body.name,
