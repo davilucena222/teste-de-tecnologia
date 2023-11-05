@@ -46,7 +46,7 @@ export function Table({ users, handleEdit, handleDelete }: TableProps) {
           <Tr key={user.id}>
             <Td width="30%">{user.name}</Td>
             <Td width="30%">{user.email}</Td>
-            <Td width="20%">{user.phone}</Td>
+            <Td width="30%">{user.phone}</Td>
 
             <Td align={"center"} width="5%">
               <FaEdit onClick={() => handleEdit(user)} />

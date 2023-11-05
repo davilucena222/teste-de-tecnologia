@@ -12,7 +12,6 @@ interface UserData {
 }[]
 
 export const addUser = (request: Request, response: Response) => {
-  console.log("request: " + request.body)
   if (request.body) {
     const body = request.body as UserData;
     const query = "INSERT INTO usuarios(`name`, `email`, `phone`, `created_at`) VALUES(?)";

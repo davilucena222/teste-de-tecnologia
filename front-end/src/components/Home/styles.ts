@@ -15,15 +15,18 @@ export const Header = styled.header`
 
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between; /* To push ButtonProp to the right */
 `;
 
-export const Title = styled.h2``;
+export const Title = styled.h2`
+  text-align: center; 
+  flex-grow: 1;
+`;
 
 export const Separator = styled.hr`
-  width: 100%; 
-  border: 0; 
-  border-top: 1px solid ${({ theme }) => theme.colors['gray-400']}; 
+  width: 100%;
+  border: 0;
+  border-top: 1px solid ${({ theme }) => theme.colors['gray-400']};
 `;
 
 export const Container = styled.div`
@@ -35,3 +38,28 @@ export const Container = styled.div`
   gap: 0.625rem;
 `;
 
+export const ButtonProp = styled.button`
+  width: 12rem;
+  height: 3rem;
+  font-size: 1rem;
+
+  border-radius: 5px;
+
+  cursor: pointer;
+
+  background: rgb(25, 195, 125);
+  color: ${({ theme }) => theme.colors['gray-100']};
+
+  &:hover {
+    background-color: rgba(25, 195, 125, 0.8); 
+    transition: 0.2s;
+  }
+
+  &:focus {
+    outline: 2px solid ${({ theme }) => theme.colors['gray-100']};
+  }
+`;
+
+export const Description = styled.h3`
+  margin-top: 14rem;
+`;

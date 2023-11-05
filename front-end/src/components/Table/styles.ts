@@ -23,13 +23,25 @@ export const Tbody = styled.tbody``;
 export const Tr = styled.tr``;
 
 export const Th = styled.th`
-  text-align: start;
+  text-align: center;
+  border-top: inset;
   border-bottom: inset;
+  border-left: inset;
+  border-right: inset;
+  border-radius: 5px;
   padding-bottom: 0.313rem;
 `;
 
 export const Td = styled.td`
-  padding-top: 0.938rem;
+  border-bottom: inset;
+  border-left: inset;
+  border-right: inset;
+  border-radius: 5px;
+  padding: 0.5rem;
   text-align: ${(props) => (props.align === "center" ? "center" : "start")};
   width: ${(props) => (props.width ? props.width : "start")};
+
+  svg {
+    cursor: pointer;
+  }
 `;

@@ -1,8 +1,9 @@
 import { toast } from "react-toastify";
-import { Button, FormContainer, Input, InputArea, Label } from "./styles";
+import { Button, ButtonClose, ContainerButtons, FormContainer, Input, InputArea, Label, Overlay } from "./styles";
 import { useRef, useEffect } from 'react';
 import { api } from "../../lib/axios";
 import { formatDate } from "../../utils/formattedDate";
+import "react-toastify/dist/ReactToastify.css";
 
 interface UserDataEdit {
   id: string;
@@ -17,9 +18,10 @@ interface FormProps {
   onEdit: UserDataEdit | null;
   setOnEdit: (user: UserDataEdit) => void;
   getUsers: () => void;
+  toggleFormVisibility: () => void;
 }
 
-export function Form({ getUsers, onEdit, setOnEdit }: FormProps) {
+export function Form({ getUsers, onEdit, setOnEdit, toggleFormVisibility }: FormProps) {
   const ref = useRef<HTMLFormElement | null>(null);
 
   useEffect(() => {
@@ -41,11 +43,11 @@ export function Form({ getUsers, onEdit, setOnEdit }: FormProps) {
       return toast.warn("Erro ao atualizar usuário!");
     }
 
-    console.log("USER: ", user.phone.value);
-
     if (!user.name.value || !user.email.value || !user.phone.value) {
       return toast.warn("Preencha todos os campos!");
     }
+
+    toggleFormVisibility();
 
     if (onEdit) {
       const userData = {
@@ -74,23 +76,28 @@ export function Form({ getUsers, onEdit, setOnEdit }: FormProps) {
   } 
 
   return (
-    <FormContainer ref={ref} onSubmit={handleSubmit}>
-      <InputArea>
-        <Label>Nome</Label>
-        <Input name="name" />
-      </InputArea>
+    <Overlay>
+      <FormContainer ref={ref} onSubmit={handleSubmit}>
+        <InputArea>
+          <Label>Nome</Label>
+          <Input name="name" />
+        </InputArea>
 
-      <InputArea>
-        <Label>E-mail</Label>
-        <Input name="email" type="email" />
-      </InputArea>
+        <InputArea>
+          <Label>E-mail</Label>
+          <Input name="email" type="email" />
+        </InputArea>
 
-      <InputArea>
-        <Label>Telefone</Label>
-        <Input name="phone" />
-      </InputArea>
+        <InputArea>
+          <Label>Telefone</Label>
+          <Input name="phone" />
+        </InputArea>
 
-      <Button type="submit">CADASTRAR</Button>
-    </FormContainer>
+        <ContainerButtons>
+          <Button type="submit">CADASTRAR</Button>
+          <ButtonClose onClick={toggleFormVisibility}>FECHAR</ButtonClose>
+        </ContainerButtons>
+      </FormContainer>
+    </Overlay>
   )
 }
