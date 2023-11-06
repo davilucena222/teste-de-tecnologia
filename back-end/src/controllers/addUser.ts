@@ -16,7 +16,18 @@ export const addUser = (request: Request, response: Response) => {
     const body = request.body as UserData;
     const query = "INSERT INTO usuarios(`name`, `email`, `phone`, `created_at`) VALUES(?)";
 
-    // const datetime = new Date();
+    if (typeof body.name !== 'string' || !isNaN(Number(body.name))) {
+      return response.status(400).json({ error: 'O campo "name" deve ser uma string. Por favor, tente novamente!' });
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(body.email)) {
+      return response.status(400).json({ error: 'O campo "email" não é um endereço de e-mail válido. Por favor, tente novamente!' });
+    }
+
+    if (isNaN(Number(body.phone))) {
+      return response.status(400).json({ error: 'O campo "phone" deve ser um número. Por favor, tente novamente!' });
+    }
 
     const data = [
       body.name,
@@ -33,6 +44,6 @@ export const addUser = (request: Request, response: Response) => {
       return response.status(200).json("Usuário criado com sucesso!");
     });
   } else {
-    response.status(400).json({ error: 'O corpo da requisição está vazio!' });
+    response.status(400).json({ error: "O corpo da requisição está vazio!" });
   }
 }

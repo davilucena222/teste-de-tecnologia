@@ -10,7 +10,7 @@ export const FormContainer = styled.form`
   gap: 0.725rem;
   padding: 1.25rem;
 
-  background-color: ${({ theme }) => theme.colors['gray-600']};
+  background: ${({ theme }) => theme.colors['gray-600']};
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   border-radius: 15px;
 `;
@@ -43,7 +43,7 @@ export const Input = styled.input`
 
   font-size: 1rem;
 
-  background-color: ${({ theme }) => theme.colors['gray-500']};
+  background: ${({ theme }) => theme.colors['gray-500']};
   color: ${({ theme }) => theme.colors['gray-100']};
 
   border: 1px solid ${({ theme }) => theme.colors['gray-700']};
@@ -81,11 +81,11 @@ export const Button = styled.button`
   border-radius: 5px;
   border: none;
 
-  background-color: rgba(25, 195, 125, 0.7);
+  background: rgba(25, 195, 125, 0.7);
   color: ${({ theme }) => theme.colors['gray-100']};
 
   &:hover {
-    background-color: rgba(25, 195, 125, 0.5);;
+    background: rgba(25, 195, 125, 0.5);;
     transition: 0.2s;
   }
 
@@ -108,11 +108,11 @@ export const ButtonClose = styled.button`
   border-radius: 5px;
   border: none;
 
-  background-color: ${({ theme }) => theme.colors['danger']};
+  background: ${({ theme }) => theme.colors['danger']};
   color: ${({ theme }) => theme.colors['gray-100']};
 
   &:hover {
-    background-color: #a03636;
+    background: #a03636;
     transition: 0.2s;
   }
 

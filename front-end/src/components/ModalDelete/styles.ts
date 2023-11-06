@@ -48,11 +48,11 @@ export const ButtonDelete = styled.button`
   border-radius: 5px;
   border: none;
 
-  background-color: rgba(25, 195, 125, 0.7);
+  background: rgba(25, 195, 125, 0.7);
   color: ${({ theme }) => theme.colors['gray-100']};
 
   &:hover {
-    background-color: rgba(25, 195, 125, 0.5);;
+    background: rgba(25, 195, 125, 0.5);;
     transition: 0.2s;
   }
 
@@ -75,11 +75,11 @@ export const ButtonCancel = styled.button`
   border-radius: 5px;
   border: none;
 
-  background-color: ${({ theme }) => theme.colors['danger']};
+  background: ${({ theme }) => theme.colors['danger']};
   color: ${({ theme }) => theme.colors['gray-100']};
 
   &:hover {
-    background-color: #a03636;
+    background: #a03636;
     transition: 0.2s;
   }
 

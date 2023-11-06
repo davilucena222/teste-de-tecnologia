@@ -35,6 +35,36 @@ export const Container = styled.div`
   gap: 0.625rem;
 `;
 
+export const ContainerTable = styled.div`
+  width: 100%;
+`;
+
+export const InputArea = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  gap: 0.5rem;
+`;
+
+export const Label = styled.label`
+  font-size: 1.5rem;
+  color: ${({ theme }) => theme.colors['gray-100']};
+  font-weight: 500;
+`;
+
+export const InputSearch = styled.input`
+  width: 20rem;
+  height: 2.2rem;
+  flex: 1;
+  color: ${({ theme }) => theme.colors['gray-700']};
+  background: ${({ theme }) => theme.colors['gray-800']};
+  border: 2px solid ${({ theme }) => theme.colors['gray-800']};
+  border-radius: 8px;
+  padding: 0 1rem;
+  font-size: 1rem;
+`;
+
 export const ButtonProp = styled.button`
   width: 10rem;
   height: 3rem;
@@ -48,7 +78,7 @@ export const ButtonProp = styled.button`
   color: ${({ theme }) => theme.colors['gray-100']};
 
   &:hover {
-    background-color: rgba(25, 195, 125, 0.8); 
+    background: rgba(25, 195, 125, 0.8); 
     transition: 0.2s;
   }
 

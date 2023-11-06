@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { ModalDelete } from "../ModalDelete";
-import { TableContainer, Tbody, Td, Th, Thead, Tr } from "./styles";
+import { ButtonDate, TableContainer, Tbody, Td, Th, Thead, Tr } from "./styles";
 import { FaTrash, FaEdit } from "react-icons/fa";
+import { convertDateShow } from "../../utils/formattedDate";
 
 interface UserData {
   id: string;
@@ -35,6 +36,18 @@ interface TableProps {
  
 export function Table({ users, handleEdit, handleDelete, modalDelete, setModalDelete }: TableProps) {
   const [userIdDeleted, setUserIdDeleted] = useState<string>("");
+  const [sortOption, setSortOption] = useState<string>("asc");
+
+  const filteredUsers = users.slice().sort((previous, next) => {
+    const previousDate = new Date(previous.created_at);
+    const nextDate = new Date(next.created_at);
+
+    if (sortOption === "asc") {
+      return previousDate.getTime() - nextDate.getTime();
+    } else {
+      return nextDate.getTime() - previousDate.getTime();
+    }
+  });
 
   function openModalDelete(id: string) {
     setModalDelete(true);
@@ -53,16 +66,28 @@ export function Table({ users, handleEdit, handleDelete, modalDelete, setModalDe
             <Th>Nome</Th>
             <Th>Email</Th>
             <Th>Telefone</Th>
+            <Th>
+              Data de criação
+              <ButtonDate
+                onClick={() =>
+                  setSortOption(sortOption === "asc" ? "desc" : "asc")
+                }
+
+              >
+                {sortOption === "asc" ? "↑" : "↓"}
+              </ButtonDate>
+            </Th>
             <Th></Th>
             <Th></Th>
           </Tr>
         </Thead>
         <Tbody>
-          {users.map((user) => (
+          {filteredUsers.map((user) => (
             <Tr key={user.id}>
-              <Td width="30%">{user.name}</Td>
-              <Td width="30%">{user.email}</Td>
-              <Td width="30%">{user.phone}</Td>
+              <Td width="20%">{user.name}</Td>
+              <Td width="20%">{user.email}</Td>
+              <Td width="20%">{user.phone}</Td>
+              <Td width="20%">{convertDateShow(user.created_at)}</Td>
 
               <Td align={"center"} width="5%">
                 <FaEdit onClick={() => handleEdit(user)} />

@@ -2,7 +2,7 @@ import { toast } from "react-toastify";
 import { Button, ButtonClose, ContainerButtons, FormContainer, Input, InputArea, Label, Overlay } from "./styles";
 import { useRef, useEffect } from 'react';
 import { api } from "../../lib/axios";
-import { formatDate } from "../../utils/formattedDate";
+import { convertDateToMySQLFormat } from "../../utils/formattedDate";
 import "react-toastify/dist/ReactToastify.css";
 
 interface UserDataEdit {
@@ -70,7 +70,7 @@ export function Form({
         name: user.name.value,
         email: user.email.value,
         phone: user.phone.value,
-        updated_at: formatDate(new Date())
+        updated_at: convertDateToMySQLFormat(new Date())
       };
 
       if (userData.name === compareData?.name && userData.email === compareData?.email && userData.phone === compareData?.phone) {
@@ -95,15 +95,43 @@ export function Form({
       const phoneExists = users.some((existingUser) => existingUser.phone === user.phone.value);
 
       if (emailExists && phoneExists) {
-        return toast.error('Tanto o email quanto o telefone já estão cadastrados na plataforma. Por favor, tente com outros dados!');
+        return alert('Tanto o email quanto o telefone já estão cadastrados na plataforma. Por favor, tente com outros dados!');
       }
+
+      const veryfyingUser = await api.get("http://localhost:4000").then(({ data }) => data).catch(({ data }) => toast.error(data));
+
+      const userExists = veryfyingUser.some((existingUser: UserDataEdit) => existingUser.email === user.email.value || existingUser.phone === user.phone.value);
+
+      if (userExists) {
+        return alert("Por favor, utilize um e-mail e telefone diferente para cadastrar usuário! Esses dados já existem.")
+      }
+
+      // await api.post("/", {
+      //   name: user.name.value,
+      //   email: user.email.value,
+      //   phone: user.phone.value,
+      //   created_at: convertDateToMySQLFormat(new Date()),
+      // }).then(({ data }) => toast.success(data)).catch(({ data }) => toast.error(data));
 
       await api.post("/", {
         name: user.name.value,
         email: user.email.value,
         phone: user.phone.value,
-        created_at: formatDate(new Date())
-      }).then(({ data }) => toast.success(data)).catch(({ data }) => toast.error(data));
+        created_at: convertDateToMySQLFormat(new Date()),
+      }).then(({ data }) => {
+        toast.success(data);
+      }).catch((error) => {
+        if (error.response && error.response.data && error.response.data.error) {
+          // Se o servidor retornar uma mensagem de erro, imprima-a no console
+          console.error(error.response.data.error);
+          toast.error(error.response.data.error);
+        } else {
+          // Caso contrário, trate o erro de outra forma (por exemplo, erro de rede)
+          console.error(error);
+          toast.error("Ocorreu um erro na solicitação.");
+        }
+      });
+      
     }
 
     user.name.value = "";
@@ -136,17 +164,17 @@ export function Form({
       <FormContainer ref={ref} onSubmit={handleSubmit}>
         <InputArea>
           <Label>Nome</Label>
-          <Input name="name" />
+          <Input name="name" placeholder="Digite seu nome" />
         </InputArea>
 
         <InputArea>
           <Label>E-mail</Label>
-          <Input name="email" type="email" />
+          <Input name="email" type="email" placeholder="Digite seu e-mail" />
         </InputArea>
 
         <InputArea>
           <Label>Telefone</Label>
-          <Input name="phone" />
+          <Input name="phone" placeholder="Digite seu número de telefone" />
         </InputArea>
 
         <ContainerButtons>
