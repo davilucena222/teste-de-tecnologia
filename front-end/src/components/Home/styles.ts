@@ -15,13 +15,10 @@ export const Header = styled.header`
 
   display: flex;
   align-items: center;
-  justify-content: space-between; /* To push ButtonProp to the right */
+  justify-content: space-between;
 `;
 
-export const Title = styled.h2`
-  text-align: center; 
-  flex-grow: 1;
-`;
+export const Title = styled.h2``;
 
 export const Separator = styled.hr`
   width: 100%;
@@ -39,7 +36,7 @@ export const Container = styled.div`
 `;
 
 export const ButtonProp = styled.button`
-  width: 12rem;
+  width: 10rem;
   height: 3rem;
   font-size: 1rem;
 

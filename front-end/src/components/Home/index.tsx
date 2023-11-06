@@ -29,7 +29,10 @@ interface UserDataEdit {
 export function Home() {
   const [users, setUsers] = useState<UserData[]>([]);
   const [onEdit, setOnEdit] = useState<UserDataEdit | null>(null);
+  const [nameButton, setNameButton] = useState("");
   const [isFormVisible, setIsFormVisible] = useState(false);
+  const [compareData, setCompareData] = useState<UserDataEdit | null>();
+  const [modalDelete, setModalDelete] = useState(false);
 
   function toggleFormVisibility() {
     setIsFormVisible(!isFormVisible);
@@ -43,8 +46,8 @@ export function Home() {
       );
 
       toast.success(response.data.message);
-    } catch(error: any) {
-      toast.error(error.data.message);
+    } catch(error) {
+      alert(error);
     }
   }
 
@@ -58,13 +61,28 @@ export function Home() {
 
       getUsers();
 
+      setModalDelete(false);
+
       toast.success(response.data);
     } catch (error: any) {
       toast.error(error.data.message);
     }
   }
 
-  function handleEdit(user: UserDataEdit) {
+  async function handleEdit(user: UserDataEdit) {
+    const findUserData = await api.get(`/findUser/${user.id}`).then(response => response.data).catch(({ data }) => toast.error(data));
+
+    setCompareData({
+      id: findUserData.id,
+      name: findUserData.name,
+      email: findUserData.email,
+      phone: findUserData.phone,
+      created_at: findUserData.created_at,
+      upated_at: findUserData.updated_at,
+      deleted_at: findUserData.deleted_at
+    });
+
+    setNameButton("atualizar");
     toggleFormVisibility();
     setOnEdit(user);
   }
@@ -89,6 +107,11 @@ export function Home() {
           setOnEdit={setOnEdit}
           getUsers={getUsers}
           toggleFormVisibility={toggleFormVisibility}
+          nameButton={nameButton}
+          setNameButton={setNameButton}
+          setCompareData={setCompareData}
+          compareData={compareData}
+          users={users}
         />
       )}
       </Container>
@@ -100,6 +123,8 @@ export function Home() {
           setOnEdit={setOnEdit} 
           handleEdit={handleEdit} 
           handleDelete={handleDelete}
+          setModalDelete={setModalDelete}
+          modalDelete={modalDelete}
         />
       ) : (
         <Description>Por favor, insira um usuário no banco de cadastros!</Description>

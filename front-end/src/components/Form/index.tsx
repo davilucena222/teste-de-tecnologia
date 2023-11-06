@@ -14,18 +14,34 @@ interface UserDataEdit {
   upated_at: Date;
   deleted_at: Date;
 }
+
 interface FormProps {
   onEdit: UserDataEdit | null;
-  setOnEdit: (user: UserDataEdit) => void;
+  nameButton: string;
+  compareData: UserDataEdit | null | undefined;
+  users: UserDataEdit[];
+  setOnEdit: (user: UserDataEdit | null) => void;
   getUsers: () => void;
+  setNameButton: (name: string) => void;
+  setCompareData: (user: UserDataEdit | null) => void;
   toggleFormVisibility: () => void;
 }
 
-export function Form({ getUsers, onEdit, setOnEdit, toggleFormVisibility }: FormProps) {
+export function Form({ 
+    getUsers, 
+    onEdit, 
+    setOnEdit, 
+    nameButton, 
+    setNameButton, 
+    setCompareData,
+    compareData,
+    toggleFormVisibility,
+    users
+  }: FormProps) {
   const ref = useRef<HTMLFormElement | null>(null);
 
   useEffect(() => {
-    if (onEdit && ref.current) {
+    if ((onEdit && ref.current)) {
       const user = ref.current;
 
       user.name.value = onEdit.name;
@@ -39,26 +55,49 @@ export function Form({ getUsers, onEdit, setOnEdit, toggleFormVisibility }: Form
 
     const user = ref.current;
 
+    setNameButton("cadastrar");
+
     if (!user) {
       return toast.warn("Erro ao atualizar usuário!");
     }
 
     if (!user.name.value || !user.email.value || !user.phone.value) {
-      return toast.warn("Preencha todos os campos!");
+      return toast.warn("Preencha todos os campos");
     }
-
-    toggleFormVisibility();
 
     if (onEdit) {
       const userData = {
         name: user.name.value,
         email: user.email.value,
         phone: user.phone.value,
-        // updated_at: formatDate(new Date())
+        updated_at: formatDate(new Date())
       };
 
+      if (userData.name === compareData?.name && userData.email === compareData?.email && userData.phone === compareData?.phone) {
+        alert("Nenhum dado foi alterado! Por favor, altere algum dado para atualizar o usuário!");
+        toast.error("Usuário não foi atualizado!");
+
+        setNameButton("atualizar");
+        
+        return;
+      }
+
       await api.put(`/${onEdit.id}`, userData).then(({ data }) => toast.success(data)).catch(({ data }) => toast.error(data));
+
+      user.name.value = "";
+      user.email.value = "";
+      user.phone.value = "";
+
+      setOnEdit(null);
+      setCompareData(null);
     } else {
+      const emailExists = users.some((existingUser) => existingUser.email === user.email.value);
+      const phoneExists = users.some((existingUser) => existingUser.phone === user.phone.value);
+
+      if (emailExists && phoneExists) {
+        return toast.error('Tanto o email quanto o telefone já estão cadastrados na plataforma. Por favor, tente com outros dados!');
+      }
+
       await api.post("/", {
         name: user.name.value,
         email: user.email.value,
@@ -71,9 +110,26 @@ export function Form({ getUsers, onEdit, setOnEdit, toggleFormVisibility }: Form
     user.email.value = "";
     user.phone.value = "";
 
+    toggleFormVisibility();
+
     setOnEdit(null);
     getUsers();
   } 
+
+  const clearFormFields = () => {
+    if (ref.current) {
+      ref.current.name.value = '';
+      ref.current.email.value = '';
+      ref.current.phone.value = '';
+    }
+  };
+
+  const handleModalClose = () => {
+    clearFormFields();
+    toggleFormVisibility();
+    setOnEdit(null);
+    setNameButton("cadastrar");
+  };
 
   return (
     <Overlay>
@@ -94,8 +150,10 @@ export function Form({ getUsers, onEdit, setOnEdit, toggleFormVisibility }: Form
         </InputArea>
 
         <ContainerButtons>
-          <Button type="submit">CADASTRAR</Button>
-          <ButtonClose onClick={toggleFormVisibility}>FECHAR</ButtonClose>
+          <Button type="submit">
+            {nameButton === "atualizar" ? "ATUALIZAR" : "CADASTRAR"}
+          </Button>
+          <ButtonClose onClick={handleModalClose}>FECHAR</ButtonClose>
         </ContainerButtons>
       </FormContainer>
     </Overlay>
