@@ -1,4 +1,4 @@
-# CONFIGURAÇÕES DA APLICAÇÃO
+# Configurações da aplicação
 
 <p>
   Para executar a aplicação antes é preciso ter o banco de dados MySQL instalado e configurado localmente com as credenciais. Abaixo segue um exemplo:
@@ -30,7 +30,7 @@ export const database = mysql.createConnection({
 
 <p>Após isso, basta ir até a pasta back-end/src/lib/database_config.ts e substituir os campos  pelas credenciais do usuário do seu banco de dados.</p>
 
-# LINK PARA BAIXAR O BANCO DE DADOS
+# Link para baixar o banco de dados
 
 <p>
   Para baixar o MySQL, basta acessar esse link:
@@ -40,7 +40,7 @@ export const database = mysql.createConnection({
   </a>
 </p>
 
-# SCRIPT SQL UTILIZADO PARA GERAR A TABELA DE USUÁRIOS
+# Script SQL utilizado para gerar a tabela de usuários
 
 ```sql
   SELECT * FROM crud.usuarios;CREATE TABLE `usuarios` (
