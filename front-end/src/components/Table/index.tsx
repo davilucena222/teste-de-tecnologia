@@ -3,38 +3,11 @@ import { ModalDelete } from "../ModalDelete";
 import { ButtonDate, TableContainer, Tbody, Td, Th, Thead, Tr } from "./styles";
 import { FaTrash, FaEdit } from "react-icons/fa";
 import { convertDateShow } from "../../utils/formattedDate";
+import { useSettingsContext } from "../context/SettingsContext";
 
-interface UserData {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  created_at: Date;
-  upated_at: Date;
-  deleted_at: Date;
-}[]
+export function Table() {
+  const { users, handleEdit, handleDelete, setModalDelete, modalDelete } = useSettingsContext();
 
-interface UserDataEdit {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  created_at: Date;
-  upated_at: Date;
-  deleted_at: Date;
-}
-
-interface TableProps {
-  users: UserData[];
-  setUsers: (users: UserData[]) => void;
-  setOnEdit: (user: UserDataEdit) => void;
-  handleEdit: (user: UserDataEdit) => void;
-  handleDelete: (id: string) => void;
-  setModalDelete: (modalDelete: boolean) => void;
-  modalDelete: boolean;
-}
- 
-export function Table({ users, handleEdit, handleDelete, modalDelete, setModalDelete }: TableProps) {
   const [userIdDeleted, setUserIdDeleted] = useState<string>("");
   const [sortOption, setSortOption] = useState<string>("asc");
 
@@ -72,7 +45,6 @@ export function Table({ users, handleEdit, handleDelete, modalDelete, setModalDe
                 onClick={() =>
                   setSortOption(sortOption === "asc" ? "desc" : "asc")
                 }
-
               >
                 {sortOption === "asc" ? "↑" : "↓"}
               </ButtonDate>

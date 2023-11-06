@@ -17,7 +17,7 @@ export const addUser = (request: Request, response: Response) => {
     const query = "INSERT INTO usuarios(`name`, `email`, `phone`, `created_at`) VALUES(?)";
 
     if (typeof body.name !== 'string' || !isNaN(Number(body.name))) {
-      return response.status(400).json({ error: 'O campo "name" deve ser uma string. Por favor, tente novamente!' });
+      return response.status(400).json({ error: 'O campo "name" deve ser fornecido um texto. Por favor, tente novamente!' });
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -26,7 +26,7 @@ export const addUser = (request: Request, response: Response) => {
     }
 
     if (isNaN(Number(body.phone))) {
-      return response.status(400).json({ error: 'O campo "phone" deve ser um número. Por favor, tente novamente!' });
+      return response.status(400).json({ error: 'O campo "phone" deve ser um número válido. Por favor, tente novamente!' });
     }
 
     const data = [

@@ -1,0 +1,16 @@
+{
+  "name": "teste-de-tecnologia",
+  "version": "1.0.0",
+  "scripts": {
+    "install": "cd front-end && npm install && cd ../back-end && npm install",
+    "dev": "concurrently \"npm run start-backend\" \"npm run start-frontend\"",
+    "start-backend": "cd back-end && npm run dev", 
+    "start-frontend": "cd front-end && npm run dev", 
+    "build": "npm run build-backend && npm run build-frontend",
+    "build-backend": "cd back-end && npm run build",
+    "build-frontend": "cd front-end && npm run build"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.1"
+  }
+}

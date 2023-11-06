@@ -4,6 +4,7 @@ import { useRef, useEffect } from 'react';
 import { api } from "../../lib/axios";
 import { convertDateToMySQLFormat } from "../../utils/formattedDate";
 import "react-toastify/dist/ReactToastify.css";
+import { useSettingsContext } from "../context/SettingsContext";
 
 interface UserDataEdit {
   id: string;
@@ -15,30 +16,19 @@ interface UserDataEdit {
   deleted_at: Date;
 }
 
-interface FormProps {
-  onEdit: UserDataEdit | null;
-  nameButton: string;
-  compareData: UserDataEdit | null | undefined;
-  users: UserDataEdit[];
-  setOnEdit: (user: UserDataEdit | null) => void;
-  getUsers: () => void;
-  setNameButton: (name: string) => void;
-  setCompareData: (user: UserDataEdit | null) => void;
-  toggleFormVisibility: () => void;
-}
-
-export function Form({ 
-    getUsers, 
-    onEdit, 
-    setOnEdit, 
-    nameButton, 
-    setNameButton, 
-    setCompareData,
-    compareData,
-    toggleFormVisibility,
-    users
-  }: FormProps) {
+export function Form() {
   const ref = useRef<HTMLFormElement | null>(null);
+  const { 
+    onEdit, 
+    nameButton, 
+    compareData, 
+    users, 
+    setOnEdit, 
+    getUsers, 
+    setNameButton, 
+    setCompareData, 
+    toggleFormVisibility
+   } = useSettingsContext();
 
   useEffect(() => {
     if ((onEdit && ref.current)) {
@@ -62,7 +52,7 @@ export function Form({
     }
 
     if (!user.name.value || !user.email.value || !user.phone.value) {
-      return toast.warn("Preencha todos os campos");
+      return toast.warn("Preencha todos os campos!");
     }
 
     if (onEdit) {
@@ -98,9 +88,11 @@ export function Form({
         return alert('Tanto o email quanto o telefone já estão cadastrados na plataforma. Por favor, tente com outros dados!');
       }
 
-      const veryfyingUser = await api.get("http://localhost:4000").then(({ data }) => data).catch(({ data }) => toast.error(data));
+      const veryfyingUser = await api.get("http://localhost:4000/").then(({ data }) => data).catch(({ data }) => toast.error(data));
 
       const userExists = veryfyingUser.some((existingUser: UserDataEdit) => existingUser.email === user.email.value || existingUser.phone === user.phone.value);
+
+      console.log(userExists)
 
       if (userExists) {
         return alert("Por favor, utilize um e-mail e telefone diferente para cadastrar usuário! Esses dados já existem.")
