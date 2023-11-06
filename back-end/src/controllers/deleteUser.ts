@@ -10,8 +10,6 @@ export const deleteUser = (request: Request, response: Response) => {
         return response.status(500).json({ error: error.message });
       }
 
-      console.log("usuário excluído: ", request.params.id);
-
       return response.status(200).json("Usuário excluído com sucesso!");
     });
   } else {

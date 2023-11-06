@@ -106,13 +106,6 @@ export function Form({
         return alert("Por favor, utilize um e-mail e telefone diferente para cadastrar usuário! Esses dados já existem.")
       }
 
-      // await api.post("/", {
-      //   name: user.name.value,
-      //   email: user.email.value,
-      //   phone: user.phone.value,
-      //   created_at: convertDateToMySQLFormat(new Date()),
-      // }).then(({ data }) => toast.success(data)).catch(({ data }) => toast.error(data));
-
       await api.post("/", {
         name: user.name.value,
         email: user.email.value,
@@ -122,13 +115,9 @@ export function Form({
         toast.success(data);
       }).catch((error) => {
         if (error.response && error.response.data && error.response.data.error) {
-          // Se o servidor retornar uma mensagem de erro, imprima-a no console
-          console.error(error.response.data.error);
           toast.error(error.response.data.error);
         } else {
-          // Caso contrário, trate o erro de outra forma (por exemplo, erro de rede)
-          console.error(error);
-          toast.error("Ocorreu um erro na solicitação.");
+          toast.error("Ocorreu um erro na solicitação!");
         }
       });
       
